@@ -1,0 +1,20 @@
+.calendarContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1000px;
+}
+.calendarContainer > div {
+  display: flex;
+  flex-basis: calc(14.2% - 14px);
+  flex-direction: column;
+}
+.calendarDay {
+  height: 120px;
+  padding: 10px;
+  outline: 1px solid;
+  margin-top: 1px;
+  margin-left: 1px;
+}

@@ -7,6 +7,7 @@ export interface AppState {
   days: { [key: string]: DayOfMonth }; // Key: Day of the month 1-(28/29/30/31)
 }
 export interface DayOfMonth {
+  day: number;
   reminders: Reminder[]; // List of reminders of that day
 }
 export interface Reminder {

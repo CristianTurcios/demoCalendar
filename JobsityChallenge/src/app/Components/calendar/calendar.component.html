@@ -1,0 +1,11 @@
+<div class="calendarContainer">
+  <div
+    *ngFor="let day of days | keyvalue"
+    class="calendarDay"
+    (click)="openDialogReminder()"
+  >
+    <div class="day">
+      {{ day.value.day }}
+    </div>
+  </div>
+</div>
