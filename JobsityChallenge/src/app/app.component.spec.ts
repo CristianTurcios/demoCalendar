@@ -1,31 +1,34 @@
-import { TestBed, async } from '@angular/core/testing';
-import { AppComponent } from './app.component';
+import { Reminder, AppState } from 'src/Redux/Interface';
+import { createStore, Store } from 'redux';
+import { reducer } from 'src/Redux/Reducer';
+import { addReminder } from 'src/Redux/actions';
 
-describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AppComponent
-      ],
-    }).compileComponents();
-  }));
-
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+describe('Add a new Reminder', () => {
+  it('Should add the reminder', () => {
+    const store: Store<AppState> = createStore<AppState>(reducer);
+    const reminder: Reminder = {
+      date: new Date(),
+      reminder: 'Hola Mundo',
+      city: 'Bogotá',
+      color: 'Red',
+      wheather: ''
+    } as Reminder;
+    store.dispatch(addReminder(reminder, 1));
+    console.log('store.getState()');
+    console.log(store.getState());
+    expect(store.getState().days[1].reminders.length).toEqual(1);
   });
-
-  it(`should have as title 'JobsityChallenge'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('JobsityChallenge');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to JobsityChallenge!');
+  it('Should not add the reminder', () => {
+    const store: Store<AppState> = createStore<AppState>(reducer);
+    const reminder: Reminder = {
+      date: new Date(),
+      reminder:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris luctus justo massa, vel malesuada arcu ornare id. Vestibulum ut aliquam purus, nec dictum urna. Nulla ut ullamcorper felis. Aenean eget volutpat mi. Aliquam sem purus, semper sed sem a, scelerisque volutpat lectus. Fusce eu feugiat sed.',
+      city: 'Bogotá',
+      color: 'Red',
+      wheather: ''
+    } as Reminder;
+    store.dispatch(addReminder(reminder, 1));
+    expect(store.getState().days.length).toEqual(0);
   });
 });
