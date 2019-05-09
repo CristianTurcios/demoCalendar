@@ -2,10 +2,22 @@
   <div
     *ngFor="let day of days | keyvalue"
     class="calendarDay"
-    (click)="openDialogReminder()"
+    (click)="openDialogReminder(day.key)"
   >
     <div class="day">
       {{ day.value.day }}
+    </div>
+
+    <div
+      class="reminder"
+      *ngFor="let reminder of day.value.reminders"
+      [style.backgroundColor]="reminder.color"
+      [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
+    >
+      <div>{{ reminder.date.format('hh:mm a') }}</div>
+      <div>
+        {{ reminder.reminder }}
+      </div>
     </div>
   </div>
 </div>

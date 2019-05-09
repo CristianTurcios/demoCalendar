@@ -1,3 +1,5 @@
+import { Moment } from 'moment';
+
 export interface Action {
   type: string;
   payload?: any;
@@ -11,7 +13,7 @@ export interface DayOfMonth {
   reminders: Reminder[]; // List of reminders of that day
 }
 export interface Reminder {
-  date: Date; // Date of the reminder
+  date: Moment; // Date of the reminder
   reminder: string; // Reminder string, max 200 characteres.
   city: string; // City Name
   wheather: string; // It is going to be populated from an external API

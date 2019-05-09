@@ -9,29 +9,29 @@ Check whether the day of week is already defined. If not, will define it.
 Check whether the reminder has less than 30 characters. If no, it will not add the reminder.
 Andrés Maltés
 */
-export const days = (state: any[] = [], action) => {
+export const days = (state: {} = [], action) => {
   switch (action.type) {
     case ADD_REMINDER:
-      if (typeof state[action.reminderToAdd.day] === 'undefined') {
-        state[action.reminderToAdd.day.format('YY/MM/DD')] = {
-          day: action.reminderToAdd.day.format('D'),
+      const stateNew = { ...state };
+      const key = action.reminderToAdd.date.format('YYYY/MM/DD');
+      if (typeof stateNew[key] === 'undefined') {
+        stateNew[key] = {
+          day: action.reminderToAdd.date.format('D'),
           reminders: []
         };
       }
-
       if (action.reminderToAdd.reminder == null) {
-        return state;
+        return stateNew;
       }
 
-      if (action.reminderToAdd.reminder.reminder.length <= 30) {
-        state[action.reminderToAdd.day].format('YY/MM/DD').reminders = [
-          ...state[action.reminderToAdd.day.format('YY/MM/DD')].reminders,
-          action.reminderToAdd.reminder
+      if (action.reminderToAdd.reminder.length <= 30) {
+        stateNew[key].reminders = [
+          ...stateNew[key].reminders,
+          action.reminderToAdd
         ];
-
-        return state;
+        return stateNew;
       } else {
-        return state;
+        return stateNew;
       }
 
     default:

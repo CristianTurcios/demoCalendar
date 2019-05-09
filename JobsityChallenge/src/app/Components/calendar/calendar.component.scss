@@ -11,10 +11,20 @@
   flex-basis: calc(14.2% - 14px);
   flex-direction: column;
 }
-.calendarDay {
+.calendarContainer .calendarDay {
   height: 120px;
   padding: 10px;
   outline: 1px solid;
   margin-top: 1px;
   margin-left: 1px;
+}
+.calendarContainer .calendarDay .reminder {
+  padding: 10px;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: sans-serif;
+  font-size: 12px;
+  border-radius: 7px;
+  text-transform: capitalize;
+  margin: 10px 0;
 }
