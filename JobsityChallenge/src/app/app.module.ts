@@ -5,7 +5,8 @@ import {
   MatButtonModule,
   MatInputModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTooltipModule
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AppComponent } from './app.component';
@@ -20,6 +21,8 @@ import {
   OwlNativeDateTimeModule
 } from 'ng-pick-datetime';
 import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
+import { sortTime } from './Pipes/SortTimePipe';
+import { HttpClientModule } from '@angular/common/http';
 
 export const MOMENT_FORMATS = {
   parseInput: 'l LT',
@@ -31,8 +34,9 @@ export const MOMENT_FORMATS = {
   monthYearA11yLabel: 'MMMM YYYY'
 };
 @NgModule({
-  declarations: [AppComponent, CalendarComponent, ReminderComponent],
+  declarations: [AppComponent, CalendarComponent, ReminderComponent, sortTime],
   imports: [
+    HttpClientModule,
     BrowserModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -45,7 +49,8 @@ export const MOMENT_FORMATS = {
     NgxMaterialTimepickerModule,
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
-    OwlMomentDateTimeModule
+    OwlMomentDateTimeModule,
+    MatTooltipModule
   ],
   providers: [
     MatDatepickerModule,

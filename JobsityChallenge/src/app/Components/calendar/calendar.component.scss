@@ -26,5 +26,17 @@
   font-size: 12px;
   border-radius: 7px;
   text-transform: capitalize;
-  margin: 10px 0;
+  margin: 2px 0;
+  position: relative;
+}
+
+.calendarContainer .weather {
+  width: 30px;
+  height: 30px;
+  background-position: center;
+  background-size: contain;
+  position: absolute;
+  right: 7px;
+  top: 3px;
+  background-repeat: no-repeat;
 }

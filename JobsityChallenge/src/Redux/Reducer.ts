@@ -1,4 +1,4 @@
-import { ADD_REMINDER } from './actions';
+import { ADD_REMINDER, ADD_FORECAST } from './actions';
 import { combineReducers, Reducer } from 'redux';
 import { AppState } from './Interface';
 
@@ -9,7 +9,7 @@ Check whether the day of week is already defined. If not, will define it.
 Check whether the reminder has less than 30 characters. If no, it will not add the reminder.
 Andrés Maltés
 */
-export const days = (state: {} = [], action) => {
+const days = (state: {} = [], action) => {
   switch (action.type) {
     case ADD_REMINDER:
       const stateNew = { ...state };
@@ -38,7 +38,20 @@ export const days = (state: {} = [], action) => {
       return state;
   }
 };
-
+const forecast = (state: {} = [], action) => {
+  switch (action.type) {
+    case ADD_FORECAST:
+      const stateNew = { ...state };
+      if (typeof stateNew[action.forecast.city] === 'undefined') {
+        stateNew[action.forecast.city] = {};
+      }
+      stateNew[action.forecast.city][action.forecast.date] = action.forecast;
+      return stateNew;
+    default:
+      return state;
+  }
+};
 export const reducer: Reducer<AppState> = combineReducers({
-  days
+  days,
+  forecast
 });

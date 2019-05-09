@@ -10,11 +10,22 @@
 
     <div
       class="reminder"
-      *ngFor="let reminder of day.value.reminders"
+      *ngFor="let reminder of day.value.reminders | sortTime"
       [style.backgroundColor]="reminder.color"
       [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
     >
-      <div>{{ reminder.date.format('hh:mm a') }}</div>
+      <div>
+        {{ reminder.date.format('hh:mm a') }}
+
+        <div
+          *ngIf="getForecast(reminder.date) as fk"
+          class="weather"
+          matTooltip="{{ getInfoForecast(fk) }}"
+          [style.background-image]="
+            cleanURL('http://openweathermap.org/img/w/' + fk.icon + '.png')
+          "
+        ></div>
+      </div>
       <div>
         {{ reminder.reminder }}
       </div>
