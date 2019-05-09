@@ -35,7 +35,31 @@ export class CalendarComponent implements OnInit {
     private wheatherService: WeatherForecastService,
     private sanitizer: DomSanitizer
   ) {}
-
+  /*
+  2019/05/09
+  Get the Names of the days of the week. This is not going to be burned in code
+  as depending on the locale the week can start on Monday or Saturday
+  Andrés Maltés
+  */
+  daysOfTheWeek() {
+    var week = moment().startOf('week');
+    var arr = [];
+    for (var i = 0; i < 7; i++) {
+      arr.push(week.format('dddd')); // Getting the name of the week
+      week.add(1, 'day');
+    }
+    return arr;
+  }
+  dropped(event) {
+    console.log(event);
+  }
+  /*
+  2019/05/08
+  Create store and subscribe the local variables to store's variables.
+  Calendar will be inizialized, creating the corresponding variables for each day
+  to be shown in the calendar.
+  Andrés Maltés
+  */
   ngOnInit() {
     this.store = createStore<AppState>(reducer);
     this.suscribeVariablesToStore();
@@ -75,9 +99,8 @@ export class CalendarComponent implements OnInit {
   }
 
   /*2019/05/09
-  If the date is within the next 3 days (Provider restriction)
-  will look for the forecast of the registered city and bring the correspondent time
-  (rain, sun,snow, etc)
+  it will  look for the forecast of the registered city and bring the correspondent time
+  (rain, sun,snow, etc). Only three days awailable (Provider's restriction)
   */
   checkWeatherForecast(city: string) {
     this.wheatherService.getWheater(city).then(data => {
@@ -91,6 +114,12 @@ export class CalendarComponent implements OnInit {
       }
     });
   }
+  /*2019/05/09
+    Look in the storage for the forecast adquired based on the city.
+    Everytime the user adds a reminder, the forecast is updated to all
+    the existing reminders for that city if the reminder is within the
+    next 3 days (provider's restriction)
+  */
   getForecast(date: string, city: string) {
     const dateM = moment(date);
     const resultCity = this.store.getState().forecast[city];
@@ -121,6 +150,9 @@ export class CalendarComponent implements OnInit {
 
     return null;
   }
+  /*2019/05/09
+    Format a forecast for displaying a tooltip
+  */
   getInfoForecast(forecast: Forecast) {
     return forecast.city + ' - ' + forecast.description;
   }
@@ -163,6 +195,7 @@ export class CalendarComponent implements OnInit {
   2019/05/08
   Subscribe variables to storage so when the storage is updated,
   so are the variables.
+    Andrés Maltés
   */
   suscribeVariablesToStore() {
     const subscription = this.store.subscribe(() => {
@@ -186,7 +219,7 @@ export class CalendarComponent implements OnInit {
       .date(1)
       .month(month)
       .year(year);
-    var monthName = startOfMonth.format('MMMM');
+    const monthName = startOfMonth.format('MMMM');
     const endOfMonth = moment()
       .date(1)
       .month(month)
@@ -208,12 +241,16 @@ export class CalendarComponent implements OnInit {
       monthName: monthName
     } as Filter);
 
-    for (let i = startOfMonth.clone(); i < endOfMonth; i.add(1, 'days')) {
+    for (const i = startOfMonth.clone(); i < endOfMonth; i.add(1, 'days')) {
       this.addReminder({ date: i } as Reminder);
     }
   }
+  /*2019/05/09
+    Change Month
+      Andrés Maltés
+  */
   changeMonth(month: number) {
-    var date = moment()
+    const date = moment()
       .day(1)
       .month(this.filter.month)
       .year(this.filter.year);

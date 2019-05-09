@@ -15,16 +15,21 @@ import * as moment from 'moment';
   templateUrl: './reminder.component.html',
   styleUrls: ['./reminder.component.scss']
 })
-export class ReminderComponent implements OnInit {
+export class ReminderComponent {
   reminderForm: FormGroup;
   color = '#131d9f';
+  /*
+  2019/05/09
+Reading the data injected by the parent component and initializating the form
+with it
+Andrés Maltés
+*/
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<ReminderComponent>,
     @Inject(MAT_DIALOG_DATA) data
   ) {
     if (data.reminder) {
-      console.log(data.reminder.date);
       this.color = data.reminder.color;
       this.reminderForm = this.formBuilder.group({
         date: [data.reminder.date, Validators.required],
@@ -62,10 +67,4 @@ Andrés Maltés
   close() {
     this.dialogRef.close();
   }
-  /*
-  2019/05/08
-  Init the form
-  Andrés Matlés
-  */
-  ngOnInit() {}
 }

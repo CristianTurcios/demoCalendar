@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import {
   MatDialogModule,
   MatButtonModule,
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatToolbarModule
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AppComponent } from './app.component';
@@ -24,7 +25,8 @@ import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
 import { SortTimePipe } from './Pipes/SortTimePipe';
 import { HttpClientModule } from '@angular/common/http';
 import { CalendarFormatPipe } from './Pipes/calendarFormat';
-
+import { ErrorsHandler } from './Handdlers/ErrorHandling';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 export const MOMENT_FORMATS = {
   parseInput: 'l LT',
   fullPickerInput: 'l LT',
@@ -57,12 +59,18 @@ export const MOMENT_FORMATS = {
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     OwlMomentDateTimeModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatToolbarModule,
+    DragDropModule
   ],
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,
-    { provide: OWL_DATE_TIME_FORMATS, useValue: MOMENT_FORMATS }
+    { provide: OWL_DATE_TIME_FORMATS, useValue: MOMENT_FORMATS },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorsHandler
+    }
   ],
   bootstrap: [AppComponent],
   entryComponents: [ReminderComponent]

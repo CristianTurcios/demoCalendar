@@ -1,43 +1,67 @@
-<button mat-button (click)="changeMonth(-1)">-</button>
-<button mat-button (click)="changeMonth(1)">+</button>
-{{ filter.monthName }} - {{ filter.year }}
+<mat-toolbar color="primary">
+  <span>{{ filter.monthName }} - {{ filter.year }}</span>
+
+  <!-- This fills the remaining space of the current row -->
+  <span class="fill-remaining-space"></span>
+
+  <span
+    ><button mat-button (click)="changeMonth(-1)">
+      <i class="fa fa-arrow-left"></i>
+    </button>
+    <button mat-button (click)="changeMonth(1)">
+      <i class="fa fa-arrow-right"></i></button
+  ></span>
+</mat-toolbar>
+
 <div class="calendarContainer container">
+  <div class="calendarHeader row">
+    <div *ngFor="let dayName of daysOfTheWeek()" class="col dayNameHeader">
+      {{ dayName }}
+    </div>
+  </div>
   <div
     *ngFor="let week of days | CalendarFormat: filter.start:filter.end"
     class="calendarWeek row"
   >
     <div
-      *ngFor="let day of week | keyvalue"
+      *ngFor="let day of week | keyvalue; let first = first; let last = last"
+      [ngClass]="{ gray: first || last }"
       class="calendarDay col"
       (click)="openDialogReminder(day.key)"
     >
       <div class="day">
         {{ day.value.day }}
       </div>
-
       <div
-        (click)="
-          openDialogReminder(day.key, reminder, i); $event.stopPropagation()
-        "
-        class="reminder"
-        *ngFor="let reminder of day.value.reminders | sortTime; let i = index"
-        [style.backgroundColor]="reminder.color"
-        [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
+        class="remindersContainer"
+        cdkDropList
+        (cdkDropListDropped)="dropped($event)"
       >
-        <div>
-          {{ reminder.date.format('hh:mm a') }}
+        <div
+          cdkDrag
+          (click)="
+            openDialogReminder(day.key, reminder, i); $event.stopPropagation()
+          "
+          class="reminder"
+          *ngFor="let reminder of day.value.reminders | sortTime; let i = index"
+          [style.backgroundColor]="reminder.color"
+          [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
+        >
+          <div>
+            {{ reminder.date.format('hh:mm a') }}
 
-          <div
-            *ngIf="getForecast(reminder.date, reminder.city) as fk"
-            class="weather"
-            matTooltip="{{ getInfoForecast(fk) }}"
-            [style.background-image]="
-              cleanURL('http://openweathermap.org/img/w/' + fk.icon + '.png')
-            "
-          ></div>
-        </div>
-        <div>
-          {{ reminder.reminder }}
+            <div
+              *ngIf="getForecast(reminder.date, reminder.city) as fk"
+              class="weather"
+              matTooltip="{{ getInfoForecast(fk) }}"
+              [style.background-image]="
+                cleanURL('http://openweathermap.org/img/w/' + fk.icon + '.png')
+              "
+            ></div>
+          </div>
+          <div>
+            {{ reminder.reminder }}
+          </div>
         </div>
       </div>
     </div>
