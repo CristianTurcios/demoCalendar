@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Reminder } from 'src/Redux/Interface';
 
 @Pipe({ name: 'sortTime' })
-export class sortTime implements PipeTransform {
+export class SortTimePipe implements PipeTransform {
   transform(reminders: Reminder[]): Reminder[] {
     reminders.sort(function(a, b) {
       return (

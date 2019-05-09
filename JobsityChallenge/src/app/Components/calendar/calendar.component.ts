@@ -1,11 +1,18 @@
+import { setFilter } from './../../../Redux/actions';
 import { OwlDateTimeModule } from 'ng-pick-datetime';
 import { WeatherForecastService } from './../../services/weather-forecast.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { DayOfMonth, AppState, Reminder, Forecast } from 'src/Redux/Interface';
+import {
+  DayOfMonth,
+  AppState,
+  Reminder,
+  Forecast,
+  Filter
+} from 'src/Redux/Interface';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { ReminderComponent } from './../Dialogs/reminder/reminder.component';
 import { createStore, Store } from 'redux';
-import { addReminder, addForecast } from 'src/Redux/actions';
+import { addReminder, addForecast, removeReminder } from 'src/Redux/actions';
 import * as moment from 'moment';
 import { reducer } from 'src/Redux/Reducer';
 import * as tinyColor from 'tinycolor2';
@@ -21,6 +28,7 @@ export class CalendarComponent implements OnInit {
   reminders: Reminder[];
   title = 'JobsityChallenge';
   days: { [key: string]: DayOfMonth };
+  filter: Filter;
 
   constructor(
     private dialog: MatDialog,
@@ -40,12 +48,17 @@ export class CalendarComponent implements OnInit {
   Open a new mat-dialog window
   Andrés Maltés
   */
-  openDialogReminder(date: string) {
+  openDialogReminder(
+    date: string,
+    oldreminder: Reminder = null,
+    index: number = -1
+  ) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = {
-      date: moment(date, 'YYYY/MM/DD').toDate()
+      date: moment(date, 'YYYY/MM/DD').toDate(),
+      reminder: oldreminder
     };
 
     const dialogRef = this.dialog.open(ReminderComponent, dialogConfig);
@@ -53,6 +66,9 @@ export class CalendarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((data: Reminder) => {
       if (data) {
         this.addReminder(data);
+        if (oldreminder) {
+          this.removeReminder(oldreminder.date, index);
+        }
         this.checkWeatherForecast(data.city);
       }
     });
@@ -69,17 +85,18 @@ export class CalendarComponent implements OnInit {
         this.addForecast({
           date: moment(data.list[i].dt_txt),
           icon: data.list[i].weather[0].icon,
-          description: data.list[i].weather[0].description
+          description: data.list[i].weather[0].description,
+          city: city
         } as Forecast);
       }
     });
   }
   getForecast(date: string, city: string) {
-    var dateM = moment(date);
-    var resultCity = this.store.getState().forecast[city];
+    const dateM = moment(date);
+    const resultCity = this.store.getState().forecast[city];
 
     if (resultCity) {
-      var result = Object.values(resultCity)
+      const result = Object.values(resultCity)
         .filter(
           (forecast: Forecast) =>
             forecast.date.format('YYYY/MM/DD') === dateM.format('YYYY/MM/DD')
@@ -90,10 +107,10 @@ export class CalendarComponent implements OnInit {
             parseFloat(b.date.format('YYYYMMDDHHMM'))
           );
         });
-      var floatRepDate = parseFloat(dateM.format('YYYYMMDDHHMM'));
-      var forecasteReturn = result[0];
+      const floatRepDate = parseFloat(dateM.format('YYYYMMDDHHMM'));
+      let forecasteReturn = result[0];
 
-      for (var i = 1; i < result.length; i++) {
+      for (let i = 1; i < result.length; i++) {
         if (parseFloat(result[i].date.format('YYYYMMDDHHMM')) < floatRepDate) {
           forecasteReturn = result[0];
         }
@@ -105,10 +122,26 @@ export class CalendarComponent implements OnInit {
     return null;
   }
   getInfoForecast(forecast: Forecast) {
-    return forecast.description;
+    return forecast.city + ' - ' + forecast.description;
   }
   cleanURL(oldURL) {
     return this.sanitizer.bypassSecurityTrustStyle('url(' + oldURL + ')');
+  }
+  /*
+  2019/05/08:
+  Function to remove reminders to the storage.
+  Andrés Maltés
+  */
+  removeReminder(date: any, index: number) {
+    this.store.dispatch(removeReminder(date, index));
+  }
+  /*
+  2019/05/08:
+  Function to set the filter.
+  Andrés Maltés
+  */
+  setFilter(filter: Filter) {
+    this.store.dispatch(setFilter(filter));
   }
   /*
   2019/05/08:
@@ -134,6 +167,8 @@ export class CalendarComponent implements OnInit {
   suscribeVariablesToStore() {
     const subscription = this.store.subscribe(() => {
       this.days = this.store.getState().days;
+
+      this.filter = this.store.getState().filter;
     });
   }
   /*
@@ -143,12 +178,46 @@ export class CalendarComponent implements OnInit {
   Then, fills the storage so the data can be read after.
   Andrés Maltés
   */
-  initializateCalendar() {
-    const startOfMonth = moment().startOf('month');
-    const endOfMonth = moment().endOf('month');
+  initializateCalendar(
+    year: number = moment().year(),
+    month: number = moment().month()
+  ) {
+    const startOfMonth = moment()
+      .date(1)
+      .month(month)
+      .year(year);
+    var monthName = startOfMonth.format('MMMM');
+    const endOfMonth = moment()
+      .date(1)
+      .month(month)
+      .year(year)
+      .endOf('month');
 
-    for (let i = startOfMonth; i <= endOfMonth; i = i.add(1, 'days')) {
+    if (startOfMonth.weekday() !== 0) {
+      startOfMonth.add(-1 * startOfMonth.weekday(), 'days');
+    }
+    if (endOfMonth.weekday() !== 0) {
+      endOfMonth.add(8 - endOfMonth.weekday(), 'days');
+    }
+
+    this.setFilter({
+      month: month,
+      year: year,
+      start: startOfMonth,
+      end: endOfMonth,
+      monthName: monthName
+    } as Filter);
+
+    for (let i = startOfMonth.clone(); i < endOfMonth; i.add(1, 'days')) {
       this.addReminder({ date: i } as Reminder);
     }
+  }
+  changeMonth(month: number) {
+    var date = moment()
+      .day(1)
+      .month(this.filter.month)
+      .year(this.filter.year);
+    date.add(month, 'month');
+    this.initializateCalendar(date.year(), date.month());
   }
 }

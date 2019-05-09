@@ -1,3 +1,4 @@
+import { Reminder } from './../../../../Redux/Interface';
 import { Component, OnInit, Inject } from '@angular/core';
 import {
   FormGroup,
@@ -6,7 +7,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { Reminder } from 'src/Redux/Interface';
+
 import * as moment from 'moment';
 
 @Component({
@@ -22,12 +23,26 @@ export class ReminderComponent implements OnInit {
     private dialogRef: MatDialogRef<ReminderComponent>,
     @Inject(MAT_DIALOG_DATA) data
   ) {
-    this.reminderForm = this.formBuilder.group({
-      date: [data.date, Validators.required],
-      reminder: ['', [Validators.required, Validators.maxLength(30)]],
-      city: ['', Validators.required],
-      color: [this.color, Validators.required]
-    });
+    if (data.reminder) {
+      console.log(data.reminder.date);
+      this.color = data.reminder.color;
+      this.reminderForm = this.formBuilder.group({
+        date: [data.reminder.date, Validators.required],
+        reminder: [
+          data.reminder.reminder,
+          [Validators.required, Validators.maxLength(30)]
+        ],
+        city: [data.reminder.city, Validators.required],
+        color: [this.color, Validators.required]
+      });
+    } else {
+      this.reminderForm = this.formBuilder.group({
+        date: [data.date, Validators.required],
+        reminder: ['', [Validators.required, Validators.maxLength(30)]],
+        city: ['', Validators.required],
+        color: [this.color, Validators.required]
+      });
+    }
   }
   /*
   2019/05/08

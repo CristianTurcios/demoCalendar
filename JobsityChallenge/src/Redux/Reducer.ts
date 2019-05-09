@@ -1,6 +1,12 @@
-import { ADD_REMINDER, ADD_FORECAST } from './actions';
+import {
+  ADD_REMINDER,
+  ADD_FORECAST,
+  REMOVE_REMINDER,
+  SET_FILTER
+} from './actions';
 import { combineReducers, Reducer } from 'redux';
 import { AppState } from './Interface';
+import * as moment from 'moment';
 
 /*
 2019/05/08
@@ -29,15 +35,26 @@ const days = (state: {} = [], action) => {
           ...stateNew[key].reminders,
           action.reminderToAdd
         ];
+
         return stateNew;
       } else {
         return stateNew;
       }
+    case REMOVE_REMINDER:
+      const stateNewDel = { ...state };
+      const keyDel = action.date.format('YYYY/MM/DD');
+      const reminders = stateNewDel[keyDel];
+      if (reminders) {
+        reminders.reminders.splice(action.index, 1);
+        stateNewDel[keyDel] = reminders;
+      }
+      return stateNewDel;
 
     default:
       return state;
   }
 };
+
 const forecast = (state: {} = [], action) => {
   switch (action.type) {
     case ADD_FORECAST:
@@ -51,7 +68,16 @@ const forecast = (state: {} = [], action) => {
       return state;
   }
 };
+const filter = (state: [] = [], action) => {
+  switch (action.type) {
+    case SET_FILTER:
+      return action.filter;
+    default:
+      return state;
+  }
+};
 export const reducer: Reducer<AppState> = combineReducers({
   days,
-  forecast
+  forecast,
+  filter
 });

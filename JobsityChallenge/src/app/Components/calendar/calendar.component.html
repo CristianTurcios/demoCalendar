@@ -1,33 +1,44 @@
-<div class="calendarContainer">
+<button mat-button (click)="changeMonth(-1)">-</button>
+<button mat-button (click)="changeMonth(1)">+</button>
+{{ filter.monthName }} - {{ filter.year }}
+<div class="calendarContainer container">
   <div
-    *ngFor="let day of days | keyvalue"
-    class="calendarDay"
-    (click)="openDialogReminder(day.key)"
+    *ngFor="let week of days | CalendarFormat: filter.start:filter.end"
+    class="calendarWeek row"
   >
-    <div class="day">
-      {{ day.value.day }}
-    </div>
-
     <div
-      class="reminder"
-      *ngFor="let reminder of day.value.reminders | sortTime"
-      [style.backgroundColor]="reminder.color"
-      [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
+      *ngFor="let day of week | keyvalue"
+      class="calendarDay col"
+      (click)="openDialogReminder(day.key)"
     >
-      <div>
-        {{ reminder.date.format('hh:mm a') }}
-
-        <div
-          *ngIf="getForecast(reminder.date) as fk"
-          class="weather"
-          matTooltip="{{ getInfoForecast(fk) }}"
-          [style.background-image]="
-            cleanURL('http://openweathermap.org/img/w/' + fk.icon + '.png')
-          "
-        ></div>
+      <div class="day">
+        {{ day.value.day }}
       </div>
-      <div>
-        {{ reminder.reminder }}
+
+      <div
+        (click)="
+          openDialogReminder(day.key, reminder, i); $event.stopPropagation()
+        "
+        class="reminder"
+        *ngFor="let reminder of day.value.reminders | sortTime; let i = index"
+        [style.backgroundColor]="reminder.color"
+        [style.color]="isLigth(reminder.color) ? '#000000' : '#ffffff'"
+      >
+        <div>
+          {{ reminder.date.format('hh:mm a') }}
+
+          <div
+            *ngIf="getForecast(reminder.date, reminder.city) as fk"
+            class="weather"
+            matTooltip="{{ getInfoForecast(fk) }}"
+            [style.background-image]="
+              cleanURL('http://openweathermap.org/img/w/' + fk.icon + '.png')
+            "
+          ></div>
+        </div>
+        <div>
+          {{ reminder.reminder }}
+        </div>
       </div>
     </div>
   </div>

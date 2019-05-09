@@ -21,8 +21,9 @@ import {
   OwlNativeDateTimeModule
 } from 'ng-pick-datetime';
 import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
-import { sortTime } from './Pipes/SortTimePipe';
+import { SortTimePipe } from './Pipes/SortTimePipe';
 import { HttpClientModule } from '@angular/common/http';
+import { CalendarFormatPipe } from './Pipes/calendarFormat';
 
 export const MOMENT_FORMATS = {
   parseInput: 'l LT',
@@ -34,7 +35,13 @@ export const MOMENT_FORMATS = {
   monthYearA11yLabel: 'MMMM YYYY'
 };
 @NgModule({
-  declarations: [AppComponent, CalendarComponent, ReminderComponent, sortTime],
+  declarations: [
+    AppComponent,
+    CalendarComponent,
+    ReminderComponent,
+    SortTimePipe,
+    CalendarFormatPipe
+  ],
   imports: [
     HttpClientModule,
     BrowserModule,
