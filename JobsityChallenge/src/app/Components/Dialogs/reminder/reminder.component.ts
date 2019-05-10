@@ -19,6 +19,13 @@ export class ReminderComponent {
   reminderForm: FormGroup;
   color = '#131d9f';
   /*
+  2019/05/10
+Updates forms color value
+Andrés Maltés
+*/
+  changeColor(event) {
+    this.reminderForm.controls.color.setValue(event);
+  } /*
   2019/05/09
 Reading the data injected by the parent component and initializating the form
 with it

@@ -1,3 +1,17 @@
+/*
+  2019/05/10
+Forecast Open weather API Structure
+Andrés Maltés
+*/
+
+export class WeatherResponse {
+  public cod: string;
+  public message: number;
+  public cnt: number;
+  public list: List[];
+  public city: City;
+}
+
 class Main {
   public temp: number;
   public temp_min: number;
@@ -50,12 +64,4 @@ class City {
   public coord: Coord;
   public country: string;
   public population: number;
-}
-
-class WeatherResponse {
-  public cod: string;
-  public message: number;
-  public cnt: number;
-  public list: List[];
-  public city: City;
 }

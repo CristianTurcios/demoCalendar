@@ -4,7 +4,7 @@
       id="colorPicker"
       [(colorPicker)]="color"
       [style.background]="color"
-      (colorPickerChange)="this.reminderForm.controls.color.value = $event"
+      (colorPickerChange)="changeColor($event)"
       tabindex="-1"
       autocomplete="off"
       readonly="true"
@@ -42,7 +42,7 @@
         placeholder="City (City, Country ISO code)"
         formControlName="city"
       />
-      <mat-error *ngIf="this.reminderForm.controls.city.invalid"
+      <mat-error *ngIf="this.reminderForm.controls['city'].invalid"
         >Mandatory Field</mat-error
       >
     </mat-form-field>

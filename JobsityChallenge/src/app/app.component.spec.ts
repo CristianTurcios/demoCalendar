@@ -1,8 +1,9 @@
 import { Reminder, AppState } from 'src/Redux/Interface';
 import { createStore, Store } from 'redux';
+
+import * as moment from 'moment';
 import { reducer } from 'src/Redux/Reducer';
 import { addReminder } from 'src/Redux/actions';
-import * as moment from 'moment';
 
 describe('Add a new Reminder', () => {
   it('Should add the reminder', () => {
@@ -11,23 +12,39 @@ describe('Add a new Reminder', () => {
       date: moment(),
       reminder: 'Hola Mundo',
       city: 'Bogotá',
-      color: 'Red'
+      color: '#000000'
     } as Reminder;
     store.dispatch(addReminder(reminder));
-    console.log('store.getState()');
-    console.log(store.getState());
-    expect(store.getState().days[1].reminders.length).toEqual(1);
+
+    expect(
+      store.getState().days[moment().format('YYYY/MM/DD')].reminders.length
+    ).toEqual(1);
   });
-  it('Should not add the reminder', () => {
+  it('Should not add the reminder (Reminder length>30)', () => {
     const store: Store<AppState> = createStore<AppState>(reducer);
     const reminder: Reminder = {
       date: moment(),
       reminder:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris luctus justo massa, vel malesuada arcu ornare id. Vestibulum ut aliquam purus, nec dictum urna. Nulla ut ullamcorper felis. Aenean eget volutpat mi. Aliquam sem purus, semper sed sem a, scelerisque volutpat lectus. Fusce eu feugiat sed.',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris luctus justo massa',
       city: 'Bogotá',
-      color: 'Red'
+      color: '#000000'
     } as Reminder;
     store.dispatch(addReminder(reminder));
-    expect(store.getState().days.length).toEqual(0);
+    expect(
+      store.getState().days[moment().format('YYYY/MM/DD')].reminders.length
+    ).toEqual(0);
+  });
+  it('Should not add the reminder (No City)', () => {
+    const store: Store<AppState> = createStore<AppState>(reducer);
+    const reminder: Reminder = {
+      date: moment(),
+      reminder: 'Lorem ipsum dolor sit amet',
+      city: '',
+      color: '#000000'
+    } as Reminder;
+    store.dispatch(addReminder(reminder));
+    expect(
+      store.getState().days[moment().format('YYYY/MM/DD')].reminders.length
+    ).toEqual(0);
   });
 });

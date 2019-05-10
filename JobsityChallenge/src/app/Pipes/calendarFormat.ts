@@ -4,6 +4,11 @@ import { Moment } from 'moment';
 @Pipe({
   name: 'CalendarFormat'
 })
+/*
+  2019/05/10
+Pipe for taking a list of days and return it in weeks format (array of chunks of 7)
+Andrés Maltés
+*/
 export class CalendarFormatPipe implements PipeTransform {
   transform(days: {}, start: Moment, end: Moment): any[] {
     if (!days) {

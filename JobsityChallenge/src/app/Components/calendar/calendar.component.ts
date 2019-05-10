@@ -49,6 +49,12 @@ export class CalendarComponent implements OnInit {
     }
     return arr;
   }
+  /*
+2019/05/10
+When the reminder is dropped in a container (day), checks if it was dropped in a different
+day and does the corresponding update (removes, then add).
+Andrés Maltés
+*/
   dropped(event, newContainer) {
     if (event.previousContainer !== event.container) {
       const newDate = moment(newContainer, 'YYYY/MM/DD');
@@ -80,12 +86,28 @@ export class CalendarComponent implements OnInit {
     this.suscribeVariablesToStore();
     this.initializateCalendar();
   }
+  /*
+2019/05/10
+Using tinyColor to determine if the font should be colored black or white.
+For better user experience.
+Andrés Maltés
+*/
   isLigth(color: string) {
     return tinyColor(color).isLight();
   }
+  /*
+2019/05/10
+Checks if the date in YYYY/MM/DD  is equivalent to today
+Andrés Maltés
+*/
   isToday(date: string) {
     return moment().format('YYYY/MM/DD') === date;
   }
+  /*
+2019/05/10
+Get the name of the day (Mon, Tue, etc) based on a YYYY/MM/DD Date
+Andrés Maltés
+*/
   getDayName(date: string) {
     return moment(date, 'YYYY/MM/DD').format('ddd');
   }
@@ -149,6 +171,14 @@ export class CalendarComponent implements OnInit {
         )
       );
   }
+  /*
+2019/05/10
+IE Compatibility
+Andrés Maltés
+*/
+  valuesPolyfill = function customObjectValues(object) {
+    return Object.keys(object).map(key => object[key]);
+  };
   /*2019/05/09
     Look in the storage for the forecast adquired based on the city.
     Everytime the user adds a reminder, the forecast is updated to all
@@ -158,9 +188,9 @@ export class CalendarComponent implements OnInit {
   getForecast(date: string, city: string) {
     const dateM = moment(date);
     const resultCity = this.store.getState().forecast[city];
-
+    const values = Object.values || this.valuesPolyfill;
     if (resultCity) {
-      const result = Object.values(resultCity)
+      const result = values(resultCity)
         .filter(
           (forecast: Forecast) =>
             forecast.date.format('YYYY/MM/DD') === dateM.format('YYYY/MM/DD')
@@ -191,6 +221,7 @@ export class CalendarComponent implements OnInit {
   getInfoForecast(forecast: Forecast) {
     return forecast.city + ' - ' + forecast.description;
   }
+
   cleanURL(oldURL) {
     return this.sanitizer.bypassSecurityTrustStyle('url(' + oldURL + ')');
   }
