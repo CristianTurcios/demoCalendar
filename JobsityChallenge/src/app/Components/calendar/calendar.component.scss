@@ -155,4 +155,7 @@
   .calendarDay.col .deleteAll {
     display: block;
   }
+  .calendarContainer .calendarDay .remindersContainer {
+    height: 100px;
+  }
 }
