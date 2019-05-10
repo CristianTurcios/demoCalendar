@@ -36,7 +36,12 @@
     <owl-date-time #dt1></owl-date-time>
 
     <mat-form-field>
-      <input required matInput placeholder="City" formControlName="city" />
+      <input
+        required
+        matInput
+        placeholder="City (City, Country ISO code)"
+        formControlName="city"
+      />
       <mat-error *ngIf="this.reminderForm.controls.city.invalid"
         >Mandatory Field</mat-error
       >

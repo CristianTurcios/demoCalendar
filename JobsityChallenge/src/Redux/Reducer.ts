@@ -2,7 +2,8 @@ import {
   ADD_REMINDER,
   ADD_FORECAST,
   REMOVE_REMINDER,
-  SET_FILTER
+  SET_FILTER,
+  REMOVE_ALL_REMINDERS
 } from './actions';
 import { combineReducers, Reducer } from 'redux';
 import { AppState } from './Interface';
@@ -36,6 +37,13 @@ const days = (state: {} = [], action) => {
           action.reminderToAdd
         ];
 
+        stateNew[key].reminders.sort(function(a, b) {
+          return (
+            parseFloat(a.date.format('HHMM')) -
+            parseFloat(b.date.format('HHMM'))
+          );
+        });
+
         return stateNew;
       } else {
         return stateNew;
@@ -49,7 +57,10 @@ const days = (state: {} = [], action) => {
         stateNewDel[keyDel] = reminders;
       }
       return stateNewDel;
-
+    case REMOVE_ALL_REMINDERS:
+      const stateNewDelAll = { ...state };
+      stateNewDelAll[action.date].reminders = [];
+      return stateNewDelAll;
     default:
       return state;
   }

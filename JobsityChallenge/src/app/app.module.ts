@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ErrorHandler } from '@angular/core';
+import { NgModule } from '@angular/core';
 import {
   MatDialogModule,
   MatButtonModule,
@@ -22,10 +22,10 @@ import {
   OwlNativeDateTimeModule
 } from 'ng-pick-datetime';
 import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
-import { SortTimePipe } from './Pipes/SortTimePipe';
+
 import { HttpClientModule } from '@angular/common/http';
 import { CalendarFormatPipe } from './Pipes/calendarFormat';
-import { ErrorsHandler } from './Handdlers/ErrorHandling';
+
 import { DragDropModule } from '@angular/cdk/drag-drop';
 export const MOMENT_FORMATS = {
   parseInput: 'l LT',
@@ -41,7 +41,7 @@ export const MOMENT_FORMATS = {
     AppComponent,
     CalendarComponent,
     ReminderComponent,
-    SortTimePipe,
+
     CalendarFormatPipe
   ],
   imports: [
@@ -66,11 +66,7 @@ export const MOMENT_FORMATS = {
   providers: [
     MatDatepickerModule,
     MatNativeDateModule,
-    { provide: OWL_DATE_TIME_FORMATS, useValue: MOMENT_FORMATS },
-    {
-      provide: ErrorHandler,
-      useClass: ErrorsHandler
-    }
+    { provide: OWL_DATE_TIME_FORMATS, useValue: MOMENT_FORMATS }
   ],
   bootstrap: [AppComponent],
   entryComponents: [ReminderComponent]

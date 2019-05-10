@@ -1,4 +1,4 @@
-import { setFilter } from './../../../Redux/actions';
+import { setFilter, removeAllReminders } from './../../../Redux/actions';
 import { OwlDateTimeModule } from 'ng-pick-datetime';
 import { WeatherForecastService } from './../../services/weather-forecast.service';
 import { Component, OnInit, Input } from '@angular/core';
@@ -25,8 +25,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class CalendarComponent implements OnInit {
   store: Store<AppState>;
-  reminders: Reminder[];
-  title = 'JobsityChallenge';
+  title = 'Reminders Calendar';
   days: { [key: string]: DayOfMonth };
   filter: Filter;
 
@@ -42,17 +41,33 @@ export class CalendarComponent implements OnInit {
   Andrés Maltés
   */
   daysOfTheWeek() {
-    var week = moment().startOf('week');
-    var arr = [];
-    for (var i = 0; i < 7; i++) {
-      arr.push(week.format('dddd')); // Getting the name of the week
+    const week = moment().startOf('week');
+    const arr = [];
+    for (let i = 0; i < 7; i++) {
+      arr.push(week.format('dddd')); // Getting the name of the day
       week.add(1, 'day');
     }
     return arr;
   }
-  dropped(event) {
-    console.log(event);
+  dropped(event, newContainer) {
+    if (event.previousContainer !== event.container) {
+      const newDate = moment(newContainer, 'YYYY/MM/DD');
+      const previousDate = event.previousContainer.id;
+      const index = event.previousIndex;
+
+      const reminder: Reminder = this.days[previousDate].reminders[index];
+
+      reminder.date = reminder.date
+        .year(newDate.year())
+        .month(newDate.month())
+        .date(newDate.date());
+
+      this.removeReminder(moment(previousDate, 'YYYY/MM/DD'), index);
+
+      this.addReminder(reminder);
+    }
   }
+
   /*
   2019/05/08
   Create store and subscribe the local variables to store's variables.
@@ -68,12 +83,18 @@ export class CalendarComponent implements OnInit {
   isLigth(color: string) {
     return tinyColor(color).isLight();
   }
+  isToday(date: string) {
+    return moment().format('YYYY/MM/DD') === date;
+  }
+  getDayName(date: string) {
+    return moment(date, 'YYYY/MM/DD').format('ddd');
+  }
   /*2019/05/08
   Open a new mat-dialog window
   Andrés Maltés
   */
   openDialogReminder(
-    date: string,
+    date: string = moment().format('YYYY/MM/DD'),
     oldreminder: Reminder = null,
     index: number = -1
   ) {
@@ -97,22 +118,36 @@ export class CalendarComponent implements OnInit {
       }
     });
   }
-
+  /*
+  2019/05/09
+  Check if the date is the selected month.
+  */
+  inCurrentMonth(date) {
+    return this.filter.month === moment(date, 'YYYY/MM/DD').month();
+  }
   /*2019/05/09
   it will  look for the forecast of the registered city and bring the correspondent time
   (rain, sun,snow, etc). Only three days awailable (Provider's restriction)
   */
   checkWeatherForecast(city: string) {
-    this.wheatherService.getWheater(city).then(data => {
-      for (let i = 0; i < data.list.length; i++) {
-        this.addForecast({
-          date: moment(data.list[i].dt_txt),
-          icon: data.list[i].weather[0].icon,
-          description: data.list[i].weather[0].description,
-          city: city
-        } as Forecast);
-      }
-    });
+    this.wheatherService
+      .getWheater(city)
+
+      .then(data => {
+        for (let i = 0; i < data.list.length; i++) {
+          this.addForecast({
+            date: moment(data.list[i].dt_txt),
+            icon: data.list[i].weather[0].icon,
+            description: data.list[i].weather[0].description,
+            city: city
+          } as Forecast);
+        }
+      })
+      .catch(() =>
+        console.log(
+          'It seems like Open Weather does not have the requested information. Please verify the city name'
+        )
+      );
   }
   /*2019/05/09
     Look in the storage for the forecast adquired based on the city.
@@ -166,6 +201,14 @@ export class CalendarComponent implements OnInit {
   */
   removeReminder(date: any, index: number) {
     this.store.dispatch(removeReminder(date, index));
+  }
+  /*
+  2019/05/08:
+  Function to remove all reminders of a given date in string YYYY/MM/DD
+  Andrés Maltés
+  */
+  removeAllReminders(date: string) {
+    this.store.dispatch(removeAllReminders(date));
   }
   /*
   2019/05/08:

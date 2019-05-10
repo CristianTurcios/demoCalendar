@@ -20,6 +20,7 @@ Andrés Maltés
       .get<WeatherResponse>(
         this.endpoint + 'forecast?q=' + city + '&cnt=16&APPID=' + this.APIKEY
       )
+
       .toPromise();
   }
 }
