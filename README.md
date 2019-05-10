@@ -14,7 +14,7 @@ Add a weather service call from a free API such as Open Weather Map, and get the
 
 Unit test the functionality: Ability to add a new "reminder" (max 30 chars) for a user entered day and time. Also, include a city.
 
-[![Unit Tests](https://andmaltes.github.io/demoCalendar/img/UnitTests.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/UnitTests.PNG 'Unit Tests')
+![Unit Tests](docs/img/UnitTests.PNG 'Unit Tests')
 
 ##Even More Features
 
