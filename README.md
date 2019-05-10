@@ -1,5 +1,7 @@
 # Demo Calendar
 
+Go to  [https://github.com/andmaltes](https://github.com/andmaltes) to check the calendar demo.
+
 ## Features
 
 Ability to add a new "reminder" (max 30 chars) for a user entered day and time. Also, include a city.
