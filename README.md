@@ -14,9 +14,9 @@ Add a weather service call from a free API such as Open Weather Map, and get the
 
 Unit test the functionality: Ability to add a new "reminder" (max 30 chars) for a user entered day and time. Also, include a city.
 
-![Unit Tests](docs/img/UnitTests.PNG 'Unit Tests')
+![Unit Tests](docs/img/UnitTests.PNG)
 
-##Even More Features
+## Even More Features
 
 Expand the calendar to support more than the current month.
 
@@ -25,17 +25,18 @@ Properly handle overflow when multiple reminders appear on the same date.
 Functionality to delete one or ALL the reminders for a specific day.
 
 Redux used for the structure of the calendar.
-###Bonus
+
+### Bonus
 
 Drag and Drop events!
 
 ## Some Screenshots
 
-![Demo Calendar](docs/img/demoCalendar.PNG 'Unit Tests')
+![Demo Calendar](docs/img/demoCalendar.PNG)
 
-![Add Reminder](docs/img/Addreminder.PNG 'Unit Tests')
+![Add Reminder](docs/img/AddReminder.PNG)
 
-![Mobile](docs/img/Mobile.PNG 'Unit Tests')
+![Mobile](docs/img/Mobile.PNG)
 
 ## Constraints
 
