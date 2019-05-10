@@ -7,7 +7,7 @@ import { WeatherResponse } from './../../Interfaces/Forecast';
 })
 export class WeatherForecastService {
   constructor(private http: HttpClient) {}
-  private endpoint = 'http://api.openweathermap.org/data/2.5/';
+  private endpoint = 'https://api.openweathermap.org/data/2.5/';
   private APIKEY = '1f220744bf683460c40028138ff86c00';
   /*
   2019/05/08
