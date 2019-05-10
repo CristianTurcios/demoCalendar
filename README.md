@@ -31,11 +31,11 @@ Drag and Drop events!
 
 ## Some Screenshots
 
-[![Demo Calendar](https://andmaltes.github.io/demoCalendar/img/demoCalendar.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/demoCalendar.PNG 'Demo Calendar')
+![Demo Calendar](docs/img/demoCalendar.PNG 'Unit Tests')
 
-[![Add Reminder](https://andmaltes.github.io/demoCalendar/img/Addreminder.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/Addreminder.PNG 'Add Reminder')
+![Add Reminder](docs/img/Addreminder.PNG 'Unit Tests')
 
-[![Mobile](https://andmaltes.github.io/demoCalendar/img/Mobile.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/Mobile.PNG 'Mobile')
+![Mobile](docs/img/Mobile.PNG 'Unit Tests')
 
 ## Constraints
 
