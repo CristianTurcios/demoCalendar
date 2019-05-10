@@ -1,6 +1,6 @@
 # Demo Calendar
 
-Go to  [https://github.com/andmaltes](https://github.com/andmaltes) to check the calendar demo.
+Go to  [https://andmaltes.github.io/demoCalendar/](https://andmaltes.github.io/demoCalendar/) to check the calendar demo.
 
 ## Features
 
