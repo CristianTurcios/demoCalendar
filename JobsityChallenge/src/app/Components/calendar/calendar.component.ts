@@ -174,15 +174,6 @@ Andrés Maltés
         );
       });
   }
-  /*
-2019/05/10
-IE Compatibility
-Andrés Maltés
-*/
-  valuesPolyfill = function customObjectValues(object) {
-    return Object.keys(object).map(key => object[key]);
-  };
-
   /*2019/05/09
     Format a forecast for displaying a tooltip
   */

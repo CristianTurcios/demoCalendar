@@ -82,9 +82,3 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-
-const valuesPolyfill = function customObjectValues(object) {
-  return Object.keys(object).map(key => object[key]);
-};
-
-const values = Object.values || valuesPolyfill;
