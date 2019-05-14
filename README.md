@@ -1,5 +1,7 @@
 # Demo Calendar
 
+Go to  [https://andmaltes.github.io/demoCalendar/](https://andmaltes.github.io/demoCalendar/) to check the calendar demo.
+
 ## Features
 
 Ability to add a new "reminder" (max 30 chars) for a user entered day and time. Also, include a city.
@@ -14,9 +16,9 @@ Add a weather service call from a free API such as Open Weather Map, and get the
 
 Unit test the functionality: Ability to add a new "reminder" (max 30 chars) for a user entered day and time. Also, include a city.
 
-[![Unit Tests](https://andmaltes.github.io/demoCalendar/img/UnitTests.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/UnitTests.PNG 'Unit Tests')
+![Unit Tests](docs/img/UnitTests.PNG)
 
-##Even More Features
+## Even More Features
 
 Expand the calendar to support more than the current month.
 
@@ -25,17 +27,18 @@ Properly handle overflow when multiple reminders appear on the same date.
 Functionality to delete one or ALL the reminders for a specific day.
 
 Redux used for the structure of the calendar.
-###Bonus
+
+### Bonus
 
 Drag and Drop events!
 
 ## Some Screenshots
 
-[![Demo Calendar](https://andmaltes.github.io/demoCalendar/img/demoCalendar.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/demoCalendar.PNG 'Demo Calendar')
+![Demo Calendar](docs/img/demoCalendar.PNG)
 
-[![Add Reminder](https://andmaltes.github.io/demoCalendar/img/Addreminder.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/Addreminder.PNG 'Add Reminder')
+![Add Reminder](docs/img/AddReminder.PNG)
 
-[![Mobile](https://andmaltes.github.io/demoCalendar/img/Mobile.PNG 'Unit Tests')](https://andmaltes.github.io/demoCalendar/img/Mobile.PNG 'Mobile')
+![Mobile](docs/img/Mobile.PNG)
 
 ## Constraints
 
