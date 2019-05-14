@@ -39,8 +39,9 @@ Drag and Drop events!
 
 ## Constraints
 
-For a correct weather forectast, make sure you include the city name followed by the country in ISO code. EJ, Bogota,CO Madrid,ES Lima,PE
-If you need the list of names, refer to: [http://bulk.openweathermap.org/sample/](http://bulk.openweathermap.org/sample/)
+For a correct weather forectast, a very limited list of destinations is Available.
+
+When mergin with the backend, make sure the city autocomplete is fill with the correct name.refer to: [http://bulk.openweathermap.org/sample/](http://bulk.openweathermap.org/sample/)
 
 Open Weather only allows the forecast of the three next days in its free version.
 

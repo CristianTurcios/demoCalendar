@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 /*
   2019/05/10
 Forecast Open weather API Structure
@@ -50,7 +51,7 @@ class List {
   public wind: Wind;
   public rain: { [key: string]: number };
   public sys: Sys;
-  public dt_txt: string;
+  public dt_txt: Moment;
 }
 
 class Coord {

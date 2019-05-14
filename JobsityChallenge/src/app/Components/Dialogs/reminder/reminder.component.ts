@@ -18,6 +18,13 @@ import * as moment from 'moment';
 export class ReminderComponent {
   reminderForm: FormGroup;
   color = '#131d9f';
+  /*2019/05/14
+    Demo of cities. It should be pulled from a backend application with the proper
+    filtering.
+
+  */
+  cityList = ['Bogota,CO', 'Lima,PE', 'Miami Beach,US', 'New York,US'];
+  selectedCity;
   /*
   2019/05/10
 Updates forms color value
@@ -73,5 +80,21 @@ Andrés Maltés
   }
   close() {
     this.dialogRef.close();
+  }
+
+  cityClick(event: any) {
+    this.selectedCity = event.option.value;
+  }
+  /*2019/05/15
+Force the selection of any of the cities
+*/
+  checkCity() {
+    if (
+      !this.selectedCity ||
+      this.selectedCity !== this.reminderForm.controls['city'].value
+    ) {
+      this.reminderForm.controls['city'].setValue(null);
+      this.selectedCity = '';
+    }
   }
 }

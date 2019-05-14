@@ -7,7 +7,8 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatTooltipModule,
-  MatToolbarModule
+  MatToolbarModule,
+  MatAutocompleteModule
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AppComponent } from './app.component';
@@ -61,7 +62,8 @@ export const MOMENT_FORMATS = {
     OwlMomentDateTimeModule,
     MatTooltipModule,
     MatToolbarModule,
-    DragDropModule
+    DragDropModule,
+    MatAutocompleteModule
   ],
   providers: [
     MatDatepickerModule,

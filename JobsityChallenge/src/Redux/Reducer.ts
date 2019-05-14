@@ -6,7 +6,7 @@ import {
   REMOVE_ALL_REMINDERS
 } from './actions';
 import { combineReducers, Reducer } from 'redux';
-import { AppState } from './Interface';
+import { AppState, Reminder } from './Interface';
 import * as moment from 'moment';
 
 const days = (state: {} = [], action) => {
@@ -77,27 +77,31 @@ Andrés Maltés
       return stateNewDelAll;
     default:
       return state;
-  }
-};
-
-const forecast = (state: {} = [], action) => {
-  switch (action.type) {
     /*
 2019/05/10
-Add Forecast Result from API request to the storage
+Add Forecast to the reminders in the specific Date and City
 Andrés Maltés
 */
     case ADD_FORECAST:
-      const stateNew = { ...state };
-      if (typeof stateNew[action.forecast.city] === 'undefined') {
-        stateNew[action.forecast.city] = {};
+      const keyForecast = action.forecast.date.format('YYYY/MM/DD');
+      const stateNewForecast = { ...state };
+      const date = stateNewForecast[keyForecast];
+      if (typeof date !== 'undefined') {
+        stateNewForecast[keyForecast].reminders = date.reminders.map(
+          (reminder: Reminder) => {
+            if (reminder.city === action.forecast.city) {
+              reminder.forecast = action.forecast;
+            }
+            return reminder;
+          }
+        );
+        return stateNewForecast;
+      } else {
+        return state;
       }
-      stateNew[action.forecast.city][action.forecast.date] = action.forecast;
-      return stateNew;
-    default:
-      return state;
   }
 };
+
 const filter = (state: [] = [], action) => {
   switch (action.type) {
     /*
@@ -113,6 +117,5 @@ Andrés Maltés
 };
 export const reducer: Reducer<AppState> = combineReducers({
   days,
-  forecast,
   filter
 });

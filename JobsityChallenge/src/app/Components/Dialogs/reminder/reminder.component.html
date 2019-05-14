@@ -37,11 +37,22 @@
 
     <mat-form-field>
       <input
-        required
+        type="text"
+        placeholder="City*"
         matInput
-        placeholder="City (City, Country ISO code)"
         formControlName="city"
+        [matAutocomplete]="cityAutoList"
+        (blur)="checkCity()"
       />
+      <mat-autocomplete
+        autoActiveFirstOption
+        #cityAutoList="matAutocomplete"
+        (optionSelected)="cityClick($event)"
+      >
+        <mat-option *ngFor="let city of cityList" [value]="city">{{
+          city
+        }}</mat-option>
+      </mat-autocomplete>
       <mat-error *ngIf="this.reminderForm.controls['city'].invalid"
         >Mandatory Field</mat-error
       >

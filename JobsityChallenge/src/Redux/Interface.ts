@@ -27,10 +27,11 @@ export interface Reminder {
   reminder: string; // Reminder string, max 200 characteres.
   city: string; // City Name
   color: string; // Background color for reminder in calendar
+  forecast: Forecast; // Forecast information gotten from weather provider
 }
 export interface Forecast {
-  date: Moment; // Date of the Forecast
+  date: Moment; // Forecast date
   icon: string; // Icon name from Open Wheather Map
+  city: string; // City Name
   description: string; // Description  from Open Wheather Map
-  city: string; // City
 }

@@ -1,5 +1,3 @@
-import { Reminder, DayOfMonth } from './Interface';
-
 export const REMOVE_REMINDER = 'REMOVE_REMINDER';
 export const ADD_REMINDER = 'ADD_REMINDER';
 export const REMOVE_ALL_REMINDERS = 'REMOVE_ALL_REMINDERS';

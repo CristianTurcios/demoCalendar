@@ -1,6 +1,11 @@
+import { Forecast } from './../../Redux/Interface';
+import { Moment } from 'moment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WeatherResponse } from './../../Interfaces/Forecast';
+import { Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,12 +21,31 @@ Param: q => City in open Weather map format. http://bulk.openweathermap.org/samp
           apikey
 Andrés Maltés
 */
-  getWheater(city: string): Promise<WeatherResponse> {
+  getWheater(date: Moment, city: string): Promise<Forecast> {
     return this.http
       .get<WeatherResponse>(
         this.endpoint + 'forecast?q=' + city + '&cnt=16&APPID=' + this.APIKEY
       )
-
+      .pipe(
+        map((serviceResponse: WeatherResponse) => {
+          return serviceResponse.list
+            .map(weatherList => {
+              const weather = weatherList.weather.shift();
+              return {
+                date: moment(weatherList.dt_txt),
+                icon: weather.icon,
+                description: weather.description,
+                city: city
+              } as Forecast;
+            })
+            .filter((forecast: Forecast) => {
+              return (
+                forecast.date.format('YYYY/MM/DD') === date.format('YYYY/MM/DD')
+              );
+            })
+            .shift();
+        })
+      )
       .toPromise();
   }
 }

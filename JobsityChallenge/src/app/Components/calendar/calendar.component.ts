@@ -1,19 +1,20 @@
-import { setFilter, removeAllReminders } from './../../../Redux/actions';
-import { OwlDateTimeModule } from 'ng-pick-datetime';
-import { WeatherForecastService } from './../../services/weather-forecast.service';
-import { Component, OnInit, Input } from '@angular/core';
 import {
   DayOfMonth,
   AppState,
   Reminder,
-  Forecast,
-  Filter
-} from 'src/Redux/Interface';
+  Filter,
+  Forecast
+} from './../../../Redux/Interface';
+import { setFilter, removeAllReminders } from './../../../Redux/actions';
+import { OwlDateTimeModule } from 'ng-pick-datetime';
+import { WeatherForecastService } from './../../services/weather-forecast.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { ReminderComponent } from './../Dialogs/reminder/reminder.component';
 import { createStore, Store } from 'redux';
 import { addReminder, addForecast, removeReminder } from 'src/Redux/actions';
 import * as moment from 'moment';
+import { Moment } from 'moment';
 import { reducer } from 'src/Redux/Reducer';
 import * as tinyColor from 'tinycolor2';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -69,7 +70,7 @@ Andrés Maltés
         .date(newDate.date());
 
       this.removeReminder(moment(previousDate, 'YYYY/MM/DD'), index);
-
+      reminder.forecast = null;
       this.addReminder(reminder);
     }
   }
@@ -130,15 +131,22 @@ Andrés Maltés
 
     const dialogRef = this.dialog.open(ReminderComponent, dialogConfig);
 
-    dialogRef.afterClosed().subscribe((data: Reminder) => {
-      if (data) {
-        this.addReminder(data);
-        if (oldreminder) {
-          this.removeReminder(oldreminder.date, index);
-        }
-        this.checkWeatherForecast(data.city);
-      }
+    dialogRef.afterClosed().subscribe((reminder: Reminder) => {
+      this.addOrEditReminder(reminder, oldreminder, index);
     });
+  }
+  /*
+  2019/05/14
+  Removes the previous reminder if any and adds the new one.
+  Then, checks for the weather forecast.
+  */
+  addOrEditReminder(reminder: Reminder, oldReminder: Reminder, index: number) {
+    if (reminder) {
+      this.addReminder(reminder);
+      if (oldReminder && index !== -1) {
+        this.removeReminder(oldReminder.date, index);
+      }
+    }
   }
   /*
   2019/05/09
@@ -149,27 +157,22 @@ Andrés Maltés
   }
   /*2019/05/09
   it will  look for the forecast of the registered city and bring the correspondent time
-  (rain, sun,snow, etc). Only three days awailable (Provider's restriction)
+  (rain, sun,snow, etc). Only three days available (Provider's restriction)
   */
-  checkWeatherForecast(city: string) {
+  checkWeatherForecast(date: Moment, city: string) {
     this.wheatherService
-      .getWheater(city)
-
-      .then(data => {
-        for (let i = 0; i < data.list.length; i++) {
-          this.addForecast({
-            date: moment(data.list[i].dt_txt),
-            icon: data.list[i].weather[0].icon,
-            description: data.list[i].weather[0].description,
-            city: city
-          } as Forecast);
+      .getWheater(date, city)
+      .then((forectast: Forecast) => {
+        if (forectast) {
+          this.addForecast(forectast);
         }
       })
-      .catch(() =>
+      .catch(error => {
+        console.log(error);
         console.log(
-          'It seems like Open Weather does not have the requested information. Please verify the city name'
-        )
-      );
+          'It seems like Open Weather does not have the requested information.'
+        );
+      });
   }
   /*
 2019/05/10
@@ -179,42 +182,7 @@ Andrés Maltés
   valuesPolyfill = function customObjectValues(object) {
     return Object.keys(object).map(key => object[key]);
   };
-  /*2019/05/09
-    Look in the storage for the forecast adquired based on the city.
-    Everytime the user adds a reminder, the forecast is updated to all
-    the existing reminders for that city if the reminder is within the
-    next 3 days (provider's restriction)
-  */
-  getForecast(date: string, city: string) {
-    const dateM = moment(date);
-    const resultCity = this.store.getState().forecast[city];
-    const values = Object.values || this.valuesPolyfill;
-    if (resultCity) {
-      const result = values(resultCity)
-        .filter(
-          (forecast: Forecast) =>
-            forecast.date.format('YYYY/MM/DD') === dateM.format('YYYY/MM/DD')
-        )
-        .sort(function(a, b) {
-          return (
-            parseFloat(a.date.format('YYYYMMDDHHMM')) -
-            parseFloat(b.date.format('YYYYMMDDHHMM'))
-          );
-        });
-      const floatRepDate = parseFloat(dateM.format('YYYYMMDDHHMM'));
-      let forecasteReturn = result[0];
 
-      for (let i = 1; i < result.length; i++) {
-        if (parseFloat(result[i].date.format('YYYYMMDDHHMM')) < floatRepDate) {
-          forecasteReturn = result[0];
-        }
-      }
-
-      return forecasteReturn;
-    }
-
-    return null;
-  }
   /*2019/05/09
     Format a forecast for displaying a tooltip
   */
@@ -256,6 +224,11 @@ Andrés Maltés
   */
   addReminder(reminder: Reminder) {
     this.store.dispatch(addReminder(reminder));
+    if (reminder.city) {
+      if (moment().add(3, 'days') > reminder.date) {
+        this.checkWeatherForecast(reminder.date, reminder.city);
+      }
+    }
   }
   /*
   2019/05/09:

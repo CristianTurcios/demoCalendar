@@ -69,11 +69,15 @@
             {{ reminder.date.format('hh:mm a') }}
 
             <div
-              *ngIf="getForecast(reminder.date, reminder.city) as fk"
+              *ngIf="reminder.forecast"
               class="weather"
-              matTooltip="{{ getInfoForecast(fk) }}"
+              matTooltip="{{ getInfoForecast(reminder.forecast) }}"
               [style.background-image]="
-                cleanURL('https://openweathermap.org/img/w/' + fk.icon + '.png')
+                cleanURL(
+                  'https://openweathermap.org/img/w/' +
+                    reminder.forecast.icon +
+                    '.png'
+                )
               "
             ></div>
           </div>
