@@ -12,8 +12,8 @@ import {
 } from '@angular/material';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { AppComponent } from './app.component';
-import { CalendarComponent } from './Components/calendar/calendar.component';
-import { ReminderComponent } from './Components/Dialogs/reminder/reminder.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
+import { ReminderComponent } from './components/dialogs/reminder/reminder.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
@@ -25,7 +25,7 @@ import {
 import { OwlMomentDateTimeModule } from 'ng-pick-datetime-moment';
 
 import { HttpClientModule } from '@angular/common/http';
-import { CalendarFormatPipe } from './Pipes/calendarFormat';
+import { CalendarFormatPipe } from './pipes/calendarformat';
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 export const MOMENT_FORMATS = {

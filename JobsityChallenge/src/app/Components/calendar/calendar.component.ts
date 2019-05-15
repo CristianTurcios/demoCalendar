@@ -4,18 +4,17 @@ import {
   Reminder,
   Filter,
   Forecast
-} from './../../../Redux/Interface';
-import { setFilter, removeAllReminders } from './../../../Redux/actions';
-import { OwlDateTimeModule } from 'ng-pick-datetime';
+} from './../../../redux/interface';
+import { setFilter, removeAllReminders } from './../../../redux/actions';
 import { WeatherForecastService } from './../../services/weather-forecast.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
-import { ReminderComponent } from './../Dialogs/reminder/reminder.component';
+import { ReminderComponent } from './../dialogs/reminder/reminder.component';
 import { createStore, Store } from 'redux';
-import { addReminder, addForecast, removeReminder } from 'src/Redux/actions';
+import { addReminder, addForecast, removeReminder } from 'src/redux/actions';
 import * as moment from 'moment';
 import { Moment } from 'moment';
-import { reducer } from 'src/Redux/Reducer';
+import { reducer } from 'src/redux/reducer';
 import * as tinyColor from 'tinycolor2';
 import { DomSanitizer } from '@angular/platform-browser';
 

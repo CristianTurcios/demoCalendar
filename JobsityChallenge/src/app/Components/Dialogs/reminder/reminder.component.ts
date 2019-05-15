@@ -1,11 +1,6 @@
-import { Reminder } from './../../../../Redux/Interface';
-import { Component, OnInit, Inject } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { Reminder } from './../../../../redux/interface';
+import { Component, Inject } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 
 import * as moment from 'moment';

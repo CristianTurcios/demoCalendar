@@ -28,7 +28,7 @@ Andrés Maltés
           reminders: []
         };
       }
-      if (action.reminderToAdd.reminder == null) {
+      if (!action.reminderToAdd.reminder) {
         return stateNew;
       }
 

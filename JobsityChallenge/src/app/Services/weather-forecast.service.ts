@@ -1,10 +1,9 @@
-import { Forecast } from './../../Redux/Interface';
+import { Forecast } from './../../redux/interface';
 import { Moment } from 'moment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { WeatherResponse } from './../../Interfaces/Forecast';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { WeatherResponse } from './../../interfaces/forecast';
+import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 @Injectable({
