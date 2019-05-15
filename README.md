@@ -50,7 +50,7 @@ Open Weather only allows the forecast of the three next days in its free version
 
 Internet Explorer 10+ Compatibility
 
-##Installation
+## Installation
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.2.3.
 
