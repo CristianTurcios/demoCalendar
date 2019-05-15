@@ -7,7 +7,7 @@ import {
 } from './../../../redux/interface';
 import { setFilter, removeAllReminders } from './../../../redux/actions';
 import { WeatherForecastService } from './../../services/weather-forecast.service';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material';
 import { ReminderComponent } from './../dialogs/reminder/reminder.component';
 import { createStore, Store } from 'redux';
@@ -15,8 +15,9 @@ import { addReminder, addForecast, removeReminder } from 'src/redux/actions';
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { reducer } from 'src/redux/reducer';
-import * as tinyColor from 'tinycolor2';
 import { DomSanitizer } from '@angular/platform-browser';
+
+import * as tinyColor from 'tinycolor2';
 
 @Component({
   selector: 'app-calendar',
@@ -55,7 +56,7 @@ When the reminder is dropped in a container (day), checks if it was dropped in a
 day and does the corresponding update (removes, then add).
 Andrés Maltés
 */
-  dropped(event, newContainer) {
+  dropped(event: any, newContainer: string) {
     if (event.previousContainer !== event.container) {
       const newDate = moment(newContainer, 'YYYY/MM/DD');
       const previousDate = event.previousContainer.id;
@@ -151,7 +152,7 @@ Andrés Maltés
   2019/05/09
   Check if the date is the selected month.
   */
-  inCurrentMonth(date) {
+  inCurrentMonth(date: string) {
     return this.filter.month === moment(date, 'YYYY/MM/DD').month();
   }
   /*2019/05/09
@@ -180,7 +181,7 @@ Andrés Maltés
     return forecast.city + ' - ' + forecast.description;
   }
 
-  cleanURL(oldURL) {
+  cleanURL(oldURL: string) {
     return this.sanitizer.bypassSecurityTrustStyle('url(' + oldURL + ')');
   }
   /*
@@ -234,13 +235,15 @@ Andrés Maltés
   so are the variables.
     Andrés Maltés
   */
+
   suscribeVariablesToStore() {
-    const subscription = this.store.subscribe(() => {
+    this.store.subscribe(() => {
       this.days = this.store.getState().days;
 
       this.filter = this.store.getState().filter;
     });
   }
+
   /*
   2019/05/08:
   Function to initializate the calendar.

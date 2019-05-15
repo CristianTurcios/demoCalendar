@@ -16,7 +16,6 @@ import { CalendarComponent } from './components/calendar/calendar.component';
 import { ReminderComponent } from './components/dialogs/reminder/reminder.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import {
   OwlDateTimeModule,
   OWL_DATE_TIME_FORMATS,
@@ -56,7 +55,7 @@ export const MOMENT_FORMATS = {
     MatButtonModule,
     MatInputModule,
     ReactiveFormsModule,
-    NgxMaterialTimepickerModule,
+
     OwlDateTimeModule,
     OwlNativeDateTimeModule,
     OwlMomentDateTimeModule,

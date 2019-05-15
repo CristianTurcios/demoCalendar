@@ -9,15 +9,14 @@ Pipe for taking a list of days and return it in weeks format (array of chunks of
 Andrés Maltés
 */
 export class CalendarFormatPipe implements PipeTransform {
-  transform(days: {}, start: Moment, end: Moment): any[] {
+  transform(days: any, start: Moment, end: Moment): any[] {
     if (!days) {
       return [];
     }
 
     const weeks: any[] = [];
     let counter = 0;
-    let portion = {};
-    const keys = Object.keys(days);
+    let portion: any = {};
     for (const i = start.clone(); i < end; i.add(1, 'days')) {
       if (counter !== 0 && counter % 7 === 0) {
         weeks.push(portion);

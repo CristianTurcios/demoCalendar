@@ -77,7 +77,7 @@ This Angular project uses the following dependencies:
 - ng-pick-datetime 7.0.0
 - ng-pick-datetime-moment 1.0.8
 - ngx-color-picker 7.5.0
-- ngx-material-timepicker 3.0.3
+- OwlDateTimeModule
 - redux 3.7.2
 - rxjs 6.3.3
 - tinycolor2 1.4.1

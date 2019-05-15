@@ -6,10 +6,9 @@ import {
   REMOVE_ALL_REMINDERS
 } from './actions';
 import { combineReducers, Reducer } from 'redux';
-import { AppState, Reminder } from './Interface';
-import * as moment from 'moment';
+import { AppState, Reminder, DayOfMonth } from './interface';
 
-const days = (state: {} = [], action) => {
+const days = (state: {} = [], action: any) => {
   switch (action.type) {
     /*
 2019/05/08
@@ -20,7 +19,7 @@ add the reminder.
 Andrés Maltés
 */
     case ADD_REMINDER:
-      const stateNew = { ...state };
+      const stateNew: any = { ...state };
       const key = action.reminderToAdd.date.format('YYYY/MM/DD');
       if (typeof stateNew[key] === 'undefined') {
         stateNew[key] = {
@@ -41,7 +40,7 @@ Andrés Maltés
           action.reminderToAdd
         ];
 
-        stateNew[key].reminders.sort(function(a, b) {
+        stateNew[key].reminders.sort(function(a: Reminder, b: Reminder) {
           return (
             parseFloat(a.date.format('HHMM')) -
             parseFloat(b.date.format('HHMM'))
@@ -58,9 +57,9 @@ Removes the reminder based on the index.
 Andrés Maltés
 */
     case REMOVE_REMINDER:
-      const stateNewDel = { ...state };
+      const stateNewDel: any = { ...state };
       const keyDel = action.date.format('YYYY/MM/DD');
-      const reminders = stateNewDel[keyDel];
+      const reminders: DayOfMonth = stateNewDel[keyDel];
       if (reminders) {
         reminders.reminders.splice(action.index, 1);
         stateNewDel[keyDel] = reminders;
@@ -72,7 +71,7 @@ Removes all reminders
 Andrés Maltés
 */
     case REMOVE_ALL_REMINDERS:
-      const stateNewDelAll = { ...state };
+      const stateNewDelAll: any = { ...state };
       stateNewDelAll[action.date].reminders = [];
       return stateNewDelAll;
     default:
@@ -84,8 +83,8 @@ Andrés Maltés
 */
     case ADD_FORECAST:
       const keyForecast = action.forecast.date.format('YYYY/MM/DD');
-      const stateNewForecast = { ...state };
-      const date = stateNewForecast[keyForecast];
+      const stateNewForecast: any = { ...state };
+      const date: DayOfMonth = stateNewForecast[keyForecast];
       if (typeof date !== 'undefined') {
         stateNewForecast[keyForecast].reminders = date.reminders.map(
           (reminder: Reminder) => {
@@ -102,7 +101,7 @@ Andrés Maltés
   }
 };
 
-const filter = (state: [] = [], action) => {
+const filter = (state: [] = [], action: any) => {
   switch (action.type) {
     /*
 2019/05/10

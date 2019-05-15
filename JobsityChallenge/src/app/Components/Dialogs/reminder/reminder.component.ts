@@ -19,13 +19,13 @@ export class ReminderComponent {
 
   */
   cityList = ['Bogota,CO', 'Lima,PE', 'Miami Beach,US', 'New York,US'];
-  selectedCity;
+  selectedCity: string;
   /*
   2019/05/10
 Updates forms color value
 Andrés Maltés
 */
-  changeColor(event) {
+  changeColor(event: string) {
     this.reminderForm.controls.color.setValue(event);
   } /*
   2019/05/09
@@ -36,7 +36,7 @@ Andrés Maltés
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<ReminderComponent>,
-    @Inject(MAT_DIALOG_DATA) data
+    @Inject(MAT_DIALOG_DATA) data: any
   ) {
     if (data.reminder) {
       this.color = data.reminder.color;
